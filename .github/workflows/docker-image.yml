@@ -14,5 +14,21 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag spring-example:$(date +%s)
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'adopt'
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@e6e38bacfdf1a337459f332974bb2327a31aaf4b
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: build
+    - name: Publish to Docker Hub
+      uses: docker/build-push-action@v1     
+      with:       
+       username: ${{ secrets.DOCKER_HUB_USERNAME }} 
+       password:  ${{ secrets.DOCKER_HUB_PASSWORD }}
+       repository: frandelgado1000/dockerHubRepository       
+       tags: ${{github.run_number}}
