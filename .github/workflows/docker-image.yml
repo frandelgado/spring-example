@@ -31,5 +31,4 @@ jobs:
       with:       
         context: .
         push: true
-        repository: frandelgado1000/spring-example   
-        tags: latest
+        tags: frandelgado1000/spring-example:latest
